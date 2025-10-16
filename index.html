@@ -265,13 +265,15 @@
         /* Client Logos */
         .clients-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            /* Now set to repeat(auto-fit, minmax(120px, 1fr)) for better fit when 7 logos are present */
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
             gap: 1.5rem;
             margin-top: 2rem;
         }
         
         .client-box {
-            background: #f5f5f7;
+            /* Changed to a light background for better logo visibility */
+            background: #f5f5f7; 
             border-radius: 20px;
             padding: 2rem;
             display: flex;
@@ -281,13 +283,15 @@
             font-weight: 600;
             color: #86868b;
             font-size: 1.2rem;
-            border: 2px dashed #d1d1d6;
+            /* Changed to a subtle solid border */
+            border: 1px solid #d1d1d6; 
         }
         
         .client-box img {
             max-width: 100%;
             max-height: 80px;
             object-fit: contain;
+            /* Removed filter as logos should now show their native color on a light background */
         }
         
         /* Contact Form */
@@ -435,6 +439,17 @@
                 <div class="folder-label">Services</div>
             </div>
             
+            <!-- Creators' Inbox Folder -->
+            <div class="folder" onclick="openWindow('creators')">
+                <div class="folder-icon">
+                    <svg class="folder-svg" viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 15 C5 10, 10 5, 15 5 L35 5 L42 10 L90 10 C95 10, 98 13, 98 18 L98 70 C98 75, 95 78, 90 78 L10 78 C5 78, 2 75, 2 70 Z" fill="#A7599D" stroke="#7F4374" stroke-width="2"/>
+                        <path d="M5 25 C5 20, 8 17, 13 17 L95 17 C97 17, 98 18, 98 20 L98 70 C98 75, 95 78, 90 78 L10 78 C5 78, 2 75, 2 70 Z" fill="#C084B8" stroke="#7F4374" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="folder-label">Creators’ Inbox</div>
+            </div>
+
             <!-- Contact Folder -->
             <div class="folder" onclick="openWindow('contact')">
                 <div class="folder-icon">
@@ -464,15 +479,63 @@
                 <p>We build brands that break through the noise. Social media, content creation, branding, and influencer marketing for the next generation.</p>
                 <p>Our approach is fresh, bold, and unapologetically creative. We don't do cookie-cutter campaigns—we craft experiences that resonate and drive real results.</p>
                 
+                <!-- START: Brands We've Worked With Section (Moved from Services Window) -->
                 <h3 style="margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem; color: #1d1d1f; font-weight: 600;">Brands We've Worked With</h3>
+                <!-- Updated description -->
+                <p>A few of the amazing brands we've helped elevate. The light gray boxes ensure clear visibility for all logo colors.</p>
                 <div class="clients-grid">
-                    <div class="client-box">CLIENT 1</div>
-                    <div class="client-box">CLIENT 2</div>
-                    <div class="client-box">CLIENT 3</div>
-                    <div class="client-box">CLIENT 4</div>
-                    <div class="client-box">CLIENT 5</div>
-                    <div class="client-box">CLIENT 6</div>
+                    
+                    <!-- 1. ASOS -->
+                    <div class="client-box">
+                        <img src="https://download.logo.wine/logo/ASOS_(retailer)/ASOS_(retailer)-Logo.wine.png" 
+                             onerror="this.src='https://placehold.co/150x80/1d1d1f/86868b?text=ASOS+Logo';" 
+                             alt="ASOS Logo">
+                    </div>
+
+                    <!-- 2. Insta360 -->
+                    <div class="client-box">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Insta360_logo_%28transparent%29.svg" 
+                             onerror="this.src='https://placehold.co/150x80/1d1d1f/86868b?text=Insta360+Logo';" 
+                             alt="Insta360 Logo">
+                    </div>
+
+                    <!-- 3. Coca-Cola -->
+                    <div class="client-box">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg" 
+                             onerror="this.src='https://placehold.co/150x80/1d1d1f/86868b?text=Coca-Cola+Logo';" 
+                             alt="Coca-Cola Logo">
+                    </div>
+
+                    <!-- 4. Walgreens (UPDATED URL) -->
+                    <div class="client-box">
+                        <img src="https://www.walgreens.com/images/adaptive/si/1485908_WAG_Signature_logo_RGB_750x208.png" 
+                             onerror="this.src='https://placehold.co/150x80/1d1d1f/86868b?text=Walgreens+Logo';" 
+                             alt="Walgreens Logo">
+                    </div>
+
+                    <!-- 5. Keeps -->
+                    <div class="client-box">
+                        <img src="https://cb-blog-prd.s3.amazonaws.com/wp-content/uploads/2021/07/21134637/KPS.Logo_.RGB_.Red_.png" 
+                             onerror="this.src='https://placehold.co/150x80/1d1d1f/86868b?text=Keeps+Logo';" 
+                             alt="Keeps Logo">
+                    </div>
+
+                    <!-- 6. Hilton Worldwide (UPDATED URL) -->
+                    <div class="client-box">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Hilton_Worldwide_logo.svg" 
+                             onerror="this.src='https://placehold.co/150x80/1d1d1f/86868b?text=Hilton+Logo';" 
+                             alt="Hilton Worldwide Logo">
+                    </div>
+
+                    <!-- 7. Puma (New Box Added) - URL Updated -->
+                    <div class="client-box">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/04/Puma-Logo.png" 
+                             onerror="this.src='https://placehold.co/150x80/1d1d1f/86868b?text=Puma+Logo';" 
+                             alt="Puma Logo">
+                    </div>
+
                 </div>
+                <!-- END: Brands We've Worked With Section -->
             </div>
         </div>
     </div>
@@ -508,6 +571,51 @@
                         <p>Partnership strategy and creator collaborations that drive real engagement. We connect you with voices that matter.</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Creators' Inbox Window (NEW) -->
+    <div class="window-overlay" id="creatorsWindow">
+        <div class="window">
+            <div class="window-header">
+                <div class="window-controls">
+                    <div class="window-control close" onclick="closeWindow('creatorsWindow')"></div>
+                    <div class="window-control minimize"></div>
+                    <div class="window-control maximize"></div>
+                </div>
+                <div class="window-title">Creators’ Inbox.folder</div>
+            </div>
+            <div class="window-content">
+                <h2>Join the Creator Pool</h2>
+                <p>We're building a network of exciting content creators for future brand collaborations. Fill out the form below to be added to our talent pool and receive opportunities tailored to your interests.</p>
+
+                <form class="contact-form" id="creatorForm">
+                    <div class="form-group">
+                        <label for="creatorName">Full Name</label>
+                        <input type="text" id="creatorName" name="creatorName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="creatorEmail">Email Address</label>
+                        <input type="email" id="creatorEmail" name="creatorEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="creatorSocials">Social Media Links (e.g., Instagram, TikTok, YouTube)</label>
+                        <textarea id="creatorSocials" name="creatorSocials" required placeholder="Provide links separated by commas or on new lines."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="creatorLocation">City/Location</label>
+                        <input type="text" id="creatorLocation" name="creatorLocation" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="creatorInterest">Content Niche / Interest</label>
+                        <input type="text" id="creatorInterest" name="creatorInterest" required placeholder="e.g., Gaming, Fashion, Food, Travel, Tech">
+                    </div>
+                    <button type="submit" class="submit-btn">Submit to Creator Pool</button>
+                    <div class="success-message" id="creatorSuccessMessage">
+                        Awesome! You've been added to our Creators' Inbox. We will reach out when a brand collaboration is a perfect fit!
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -572,7 +680,7 @@
             });
         });
         
-        // Form submission simulation
+        // Form submission simulation for Contact Form
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -581,6 +689,21 @@
             
             setTimeout(() => {
                 document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
+        });
+
+        // Form submission simulation for Creator Form (NEW)
+        document.getElementById('creatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show success message inside the window
+            document.getElementById('creatorSuccessMessage').style.display = 'block';
+            this.reset();
+            
+            // Hide message and close window after a delay
+            setTimeout(() => {
+                document.getElementById('creatorSuccessMessage').style.display = 'none';
+                closeWindow('creatorsWindow'); 
             }, 5000);
         });
     </script>
