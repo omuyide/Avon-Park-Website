@@ -575,7 +575,7 @@
         </div>
     </div>
 
-    <!-- Creators' Inbox Window (NEW) -->
+    <!-- Creators' Inbox Window (NOW USES FORMSUBMIT) -->
     <div class="window-overlay" id="creatorsWindow">
         <div class="window">
             <div class="window-header">
@@ -590,37 +590,39 @@
                 <h2>Join the Creator Pool</h2>
                 <p>We're building a network of exciting content creators for future brand collaborations. Fill out the form below to be added to our talent pool and receive opportunities tailored to your interests.</p>
 
-                <form class="contact-form" id="creatorForm">
+                <form class="contact-form" action="https://formsubmit.co/talent@avonpark.co" method="POST" id="creatorForm">
+                    <!-- Hidden field to specify the email subject -->
+                    <input type="hidden" name="_subject" value="NEW Creator Inbox Submission from AvonPark.co">
+                    
                     <div class="form-group">
                         <label for="creatorName">Full Name</label>
-                        <input type="text" id="creatorName" name="creatorName" required>
+                        <input type="text" id="creatorName" name="Full Name" required>
                     </div>
                     <div class="form-group">
                         <label for="creatorEmail">Email Address</label>
-                        <input type="email" id="creatorEmail" name="creatorEmail" required>
+                        <!-- Use _replyto for easy reply button in your email client -->
+                        <input type="email" id="creatorEmail" name="_replyto" required> 
                     </div>
                     <div class="form-group">
                         <label for="creatorSocials">Social Media Links (e.g., Instagram, TikTok, YouTube)</label>
-                        <textarea id="creatorSocials" name="creatorSocials" required placeholder="Provide links separated by commas or on new lines."></textarea>
+                        <textarea id="creatorSocials" name="Socials" required placeholder="Provide links separated by commas or on new lines."></textarea>
                     </div>
                     <div class="form-group">
                         <label for="creatorLocation">City/Location</label>
-                        <input type="text" id="creatorLocation" name="creatorLocation" required>
+                        <input type="text" id="creatorLocation" name="Location" required>
                     </div>
                     <div class="form-group">
                         <label for="creatorInterest">Content Niche / Interest</label>
-                        <input type="text" id="creatorInterest" name="creatorInterest" required placeholder="e.g., Gaming, Fashion, Food, Travel, Tech">
+                        <input type="text" id="creatorInterest" name="Niche/Interest" required placeholder="e.g., Gaming, Fashion, Food, Travel, Tech">
                     </div>
                     <button type="submit" class="submit-btn">Submit to Creator Pool</button>
-                    <div class="success-message" id="creatorSuccessMessage">
-                        Awesome! You've been added to our Creators' Inbox. We will reach out when a brand collaboration is a perfect fit!
-                    </div>
+                    <!-- Success message is no longer needed here, as FormSubmit handles the confirmation page -->
                 </form>
             </div>
         </div>
     </div>
     
-    <!-- Contact Window -->
+    <!-- Contact Window (NOW USES FORMSUBMIT) -->
     <div class="window-overlay" id="contactWindow">
         <div class="window">
             <div class="window-header">
@@ -634,27 +636,29 @@
             <div class="window-content">
                 <h2>Get In Touch</h2>
                 <p>Ready to elevate your brand? Let's talk about your project.</p>
-                <form class="contact-form" id="contactForm">
+                <form class="contact-form" action="https://formsubmit.co/talent@avonpark.co" method="POST" id="contactForm">
+                    <!-- Hidden field to specify the email subject -->
+                    <input type="hidden" name="_subject" value="NEW Project Inquiry from AvonPark.co">
+                    
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
+                        <input type="text" id="name" name="Name" required>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
+                        <!-- Use _replyto for easy reply button in your email client -->
+                        <input type="email" id="email" name="_replyto" required>
                     </div>
                     <div class="form-group">
                         <label for="company">Company</label>
-                        <input type="text" id="company" name="company">
+                        <input type="text" id="company" name="Company">
                     </div>
                     <div class="form-group">
                         <label for="message">Message</label>
-                        <textarea id="message" name="message" required></textarea>
+                        <textarea id="message" name="Message" required></textarea>
                     </div>
                     <button type="submit" class="submit-btn">Send Message</button>
-                    <div class="success-message" id="successMessage">
-                        Thanks for reaching out! We'll get back to you soon.
-                    </div>
+                    <!-- Success message is no longer needed here, as FormSubmit handles the confirmation page -->
                 </form>
             </div>
         </div>
@@ -680,32 +684,8 @@
             });
         });
         
-        // Form submission simulation for Contact Form
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            document.getElementById('successMessage').style.display = 'block';
-            this.reset();
-            
-            setTimeout(() => {
-                document.getElementById('successMessage').style.display = 'none';
-            }, 5000);
-        });
-
-        // Form submission simulation for Creator Form (NEW)
-        document.getElementById('creatorForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Show success message inside the window
-            document.getElementById('creatorSuccessMessage').style.display = 'block';
-            this.reset();
-            
-            // Hide message and close window after a delay
-            setTimeout(() => {
-                document.getElementById('creatorSuccessMessage').style.display = 'none';
-                closeWindow('creatorsWindow'); 
-            }, 5000);
-        });
+        // --- IMPORTANT: Removed the old JavaScript submission handlers ---
+        // Forms now use the native HTML submission to FormSubmit.co
     </script>
 </body>
 </html>
