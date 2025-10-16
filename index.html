@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVON PARK</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            /* Retro Green Background */
+            background: #87B38D;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        /* Background Grid Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,0.15) 19px, rgba(255,255,255,0.15) 20px),
+                repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(255,255,255,0.15) 19px, rgba(255,255,255,0.15) 20px);
+            background-color: #87B38D;
+            background-size: 20px 20px;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+
+        /* Main Container to hold everything above the grid pattern */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-top: 2rem;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            color: white;
+            font-weight: 700;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            color: white;
+            font-weight: 300;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Folder Grid */
+        .folders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .folder {
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-align: center;
+        }
+        
+        .folder:hover {
+            transform: translateY(-10px);
+        }
+        
+        .folder-icon {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 1rem;
+            position: relative;
+            transition: all 0.4s ease;
+        }
+        
+        .folder:hover .folder-icon {
+            transform: scale(1.1);
+        }
+        
+        /* Folder SVG Styling */
+        .folder-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+        }
+        
+        .folder-label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Window Overlay */
+        .window-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 2rem;
+        }
+        
+        .window-overlay.active {
+            display: flex;
+        }
+        
+        .window {
+            background: white;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            animation: windowOpen 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; /* Smooth bezier curve animation */
+        }
+        
+        @keyframes windowOpen {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .window-header {
+            background: linear-gradient(180deg, #f5f5f7 0%, #e8e8ea 100%);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid #d1d1d6;
+        }
+        
+        .window-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .window-control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .window-control.close {
+            background: #ff5f57;
+        }
+        
+        .window-control.minimize {
+            background: #febc2e;
+        }
+        
+        .window-control.maximize {
+            background: #28c840;
+        }
+        
+        .window-control:hover {
+            filter: brightness(0.9);
+        }
+        
+        .window-title {
+            flex: 1;
+            text-align: center;
+            font-weight: 600;
+            color: #1d1d1f;
+            font-size: 0.95rem;
+        }
+        
+        .window-content {
+            padding: 3rem;
+            overflow-y: auto;
+            max-height: calc(85vh - 60px);
+        }
+        
+        .window-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #1d1d1f;
+            font-weight: 700;
+        }
+        
+        .window-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #1d1d1f;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Services Grid */
+        .services-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .service-item {
+            /* NEW: Vibrant Coral/Orange Gradient for a unique retro feel */
+            background: linear-gradient(135deg, #FF9966 0%, #FF5E62 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            color: white;
+            /* Stronger shadow using the new color palette */
+            box-shadow: 0 10px 20px rgba(255, 94, 98, 0.4); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Adding a subtle border for extra definition */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .service-item:hover {
+            transform: translateY(-5px);
+            /* NEW: Add a gold border/glow on hover for contrast */
+            box-shadow: 0 15px 30px rgba(255, 94, 98, 0.6), 0 0 0 4px #FFC700;
+        }
+        
+        .service-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .service-item p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1rem;
+        }
+        
+        /* Client Logos */
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .client-box {
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+            font-weight: 600;
+            color: #86868b;
+            font-size: 1.2rem;
+            border: 2px dashed #d1d1d6;
+        }
+        
+        .client-box img {
+            max-width: 100%;
+            max-height: 80px;
+            object-fit: contain;
+        }
+        
+        /* Contact Form */
+        .contact-form {
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem;
+            /* Updated unfocused border color for better definition */
+            border: 1px solid #b3b3b8; 
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            /* New Gold/Amber focus color */
+            border-color: #FFC700;
+            /* New shadow tint to match the gold focus */
+            box-shadow: 0 0 0 3px rgba(255, 199, 0, 0.2); 
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .submit-btn {
+            /* NEW: Matching new service item gradient */
+            background: linear-gradient(135deg, #FF9966 0%, #FF5E62 100%); 
+            color: white;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            /* Matching new shadow color */
+            box-shadow: 0 4px 15px rgba(255, 94, 98, 0.4); 
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            /* Matching new shadow color */
+            box-shadow: 0 10px 20px rgba(255, 94, 98, 0.6); 
+        }
+        
+        .success-message {
+            display: none;
+            padding: 1rem;
+            background: #28c840;
+            color: white;
+            border-radius: 12px;
+            margin-top: 1rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .folders-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .folder-icon {
+                width: 100px;
+                height: 100px;
+            }
+
+            .folder-label {
+                font-size: 1rem;
+            }
+            
+            .services-list {
+                grid-template-columns: 1fr;
+            }
+
+            .clients-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .window-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .window-content h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <!-- Main Header -->
+        <div class="header">
+            <h1>AVON PARK</h1>
+            <p class="tagline">Creative Agency</p>
+        </div>
+
+        <!-- Folder Grid -->
+        <div class="folders-grid">
+            <!-- Home Folder -->
+            <div class="folder" onclick="openWindow('home')">
+                <div class="folder-icon">
+                    <svg class="folder-svg" viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 15 C5 10, 10 5, 15 5 L35 5 L42 10 L90 10 C95 10, 98 13, 98 18 L98 70 C98 75, 95 78, 90 78 L10 78 C5 78, 2 75, 2 70 Z" fill="#FF6B6B" stroke="#CC5555" stroke-width="2"/>
+                        <path d="M5 25 C5 20, 8 17, 13 17 L95 17 C97 17, 98 18, 98 20 L98 70 C98 75, 95 78, 90 78 L10 78 C5 78, 2 75, 2 70 Z" fill="#FF8787" stroke="#CC5555" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="folder-label">Home</div>
+            </div>
+            
+            <!-- Services Folder -->
+            <div class="folder" onclick="openWindow('services')">
+                <div class="folder-icon">
+                    <svg class="folder-svg" viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 15 C5 10, 10 5, 15 5 L35 5 L42 10 L90 10 C95 10, 98 13, 98 18 L98 70 C98 75, 95 78, 90 78 L10 78 C5 78, 2 75, 2 70 Z" fill="#4ECDC4" stroke="#3BA39C" stroke-width="2"/>
+                        <path d="M5 25 C5 20, 8 17, 13 17 L95 17 C97 17, 98 18, 98 20 L98 70 C98 75, 95 78, 90 78 L10 78 C5 78, 2 75, 2 70 Z" fill="#6FE3DA" stroke="#3BA39C" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="folder-label">Services</div>
+            </div>
+            
+            <!-- Contact Folder -->
+            <div class="folder" onclick="openWindow('contact')">
+                <div class="folder-icon">
+                    <svg class="folder-svg" viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 15 C5 10, 10 5, 15 5 L35 5 L42 10 L90 10 C95 10, 98 13, 98 18 L98 70 C98 75, 95 78, 90 78 L10 78 C5 78, 2 75, 2 70 Z" fill="#FFD93D" stroke="#CCA830" stroke-width="2"/>
+                        <path d="M5 25 C5 20, 8 17, 13 17 L95 17 C97 17, 98 18, 98 20 L98 70 C98 75, 95 78, 90 78 L10 78 C5 78, 2 75, 2 70 Z" fill="#FFE66D" stroke="#CCA830" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="folder-label">Contact</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Home Window -->
+    <div class="window-overlay" id="homeWindow">
+        <div class="window">
+            <div class="window-header">
+                <div class="window-controls">
+                    <div class="window-control close" onclick="closeWindow('homeWindow')"></div>
+                    <div class="window-control minimize"></div>
+                    <div class="window-control maximize"></div>
+                </div>
+                <div class="window-title">Home.folder</div>
+            </div>
+            <div class="window-content">
+                <h2>Welcome to Avon Park</h2>
+                <p>We build brands that break through the noise. Social media, content creation, branding, and influencer marketing for the next generation.</p>
+                <p>Our approach is fresh, bold, and unapologetically creative. We don't do cookie-cutter campaigns—we craft experiences that resonate and drive real results.</p>
+                
+                <h3 style="margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.8rem; color: #1d1d1f; font-weight: 600;">Brands We've Worked With</h3>
+                <div class="clients-grid">
+                    <div class="client-box">CLIENT 1</div>
+                    <div class="client-box">CLIENT 2</div>
+                    <div class="client-box">CLIENT 3</div>
+                    <div class="client-box">CLIENT 4</div>
+                    <div class="client-box">CLIENT 5</div>
+                    <div class="client-box">CLIENT 6</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Services Window -->
+    <div class="window-overlay" id="servicesWindow">
+        <div class="window">
+            <div class="window-header">
+                <div class="window-controls">
+                    <div class="window-control close" onclick="closeWindow('servicesWindow')"></div>
+                    <div class="window-control minimize"></div>
+                    <div class="window-control maximize"></div>
+                </div>
+                <div class="window-title">Services.folder</div>
+            </div>
+            <div class="window-content">
+                <h2>What We Do</h2>
+                <div class="services-list">
+                    <div class="service-item">
+                        <h3>Social Media</h3>
+                        <p>Strategy, content planning, and community management that turns followers into fans. We know what works on every platform.</p>
+                    </div>
+                    <div class="service-item">
+                        <h3>Content Creation</h3>
+                        <p>Video, photography, graphics, and copy that stops the scroll. We create content designed for how people actually consume media.</p>
+                    </div>
+                    <div class="service-item">
+                        <h3>Branding</h3>
+                        <p>Visual identity, messaging, and positioning that makes your brand impossible to ignore. We build brands with personality.</p>
+                    </div>
+                    <div class="service-item">
+                        <h3>Influencer Marketing</h3>
+                        <p>Partnership strategy and creator collaborations that drive real engagement. We connect you with voices that matter.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Contact Window -->
+    <div class="window-overlay" id="contactWindow">
+        <div class="window">
+            <div class="window-header">
+                <div class="window-controls">
+                    <div class="window-control close" onclick="closeWindow('contactWindow')"></div>
+                    <div class="window-control minimize"></div>
+                    <div class="window-control maximize"></div>
+                </div>
+                <div class="window-title">Contact.folder</div>
+            </div>
+            <div class="window-content">
+                <h2>Get In Touch</h2>
+                <p>Ready to elevate your brand? Let's talk about your project.</p>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company</label>
+                        <input type="text" id="company" name="company">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                    <div class="success-message" id="successMessage">
+                        Thanks for reaching out! We'll get back to you soon.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function openWindow(windowName) {
+            const windowId = windowName + 'Window';
+            document.getElementById(windowId).classList.add('active');
+        }
+        
+        function closeWindow(windowId) {
+            document.getElementById(windowId).classList.remove('active');
+        }
+        
+        // Close window when clicking outside of the modal
+        document.querySelectorAll('.window-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                // Check if the click target is the overlay itself (not a child element)
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+        
+        // Form submission simulation
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            document.getElementById('successMessage').style.display = 'block';
+            this.reset();
+            
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
